@@ -1,0 +1,165 @@
+version 17.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+! Call-home is enabled by Smart-Licensing.
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname F5GC-C8K
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition EQUINIX-MGMT
+ !
+ address-family ipv4
+ exit-address-family
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+ip name-server 8.8.8.8 8.8.4.4
+!
+!         
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+multilink bundle-name authenticated
+!
+
+diagnostic bootup level minimal
+memory free low-watermark processor 63718
+!
+redundancy
+!
+interface Tunnel100
+ description ### Remote UE/GNB ###
+ ip address 172.23.60.1 255.255.255.252
+ tunnel source GigabitEthernet2
+ tunnel mode ipip
+ tunnel destination XXXXX
+!
+interface GigabitEthernet1
+ vrf forwarding EQUINIX-MGMT
+ ip address dhcp
+ negotiation auto
+!
+interface GigabitEthernet2
+ ip address XXXXX
+ ip nat outside
+ negotiation auto
+!
+interface GigabitEthernet3
+ description ### F5GC-UPF-N3 ###
+ ip address 172.23.63.1 255.255.255.240
+ negotiation auto
+!
+interface GigabitEthernet4
+ description ### F5GC-UPF-N4 ###
+ ip address 172.23.64.1 255.255.255.240
+ negotiation auto
+!
+interface GigabitEthernet5
+ ip address 172.23.66.1 255.255.255.0
+ ip nat inside
+ ip tcp adjust-mss 1000
+ negotiation auto
+!
+interface GigabitEthernet6
+ description ### F5GC-CP-N4 ###
+ ip address 172.23.64.17 255.255.255.240
+ negotiation auto
+!
+interface GigabitEthernet7
+ description ### F5GC-CP-N2 ###
+ ip address 172.23.62.1 255.255.255.240
+ negotiation auto
+!
+interface GigabitEthernet8
+ description ### F5GC-GNB-N2 ###
+ ip address 172.23.62.17 255.255.255.240
+ negotiation auto
+!
+interface GigabitEthernet9
+ description ### F5GC-GNB-N3 ###
+ ip address 172.23.63.17 255.255.255.240
+ negotiation auto
+!
+interface GigabitEthernet10
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet11
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet12
+ no ip address
+ shutdown
+ negotiation auto
+!
+ip forward-protocol nd
+no ip http server
+ip http secure-server
+!
+ip nat inside source list NAT interface GigabitEthernet2 overload extended
+ip route 0.0.0.0 0.0.0.0 XXXXX
+ip route 172.23.62.32 255.255.255.240 172.23.60.2
+ip route 172.23.63.32 255.255.255.240 172.23.60.2
+ip ssh time-out 60
+ip ssh logging events
+ip ssh version 2
+ip ssh dh min size 4096
+!
+ip access-list extended NAT
+ 10 deny ip any 10.0.0.0 0.0.0.255
+ 20 deny ip any 172.16.0.0 0.15.255.255
+ 30 deny ip any 192.168.0.0 0.0.255.255
+ 40 permit ip host 172.23.66.20 any
+!
+!
+!
+!
+control-plane
+!
+banner login ^C
+==========================================================
+
+Access to this system is limited to authorized users for
+             company business purposes only.
+
+     WARNING: All unauthorized access is prohibited.
+
+==========================================================
+^C
+!
+line con 0
+ stopbits 1
+line aux 0
+line vty 0 4
+ exec-timeout 30 0
+ login local
+ transport input ssh
+ transport output ssh
+!         
+ntp server time.google.com prefer
+!
+end
