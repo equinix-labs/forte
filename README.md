@@ -46,3 +46,19 @@ The Forte project is targeted for developers/architects to try out the optimal p
 ### Virtual Machines
 
 
+The FORTE deployment consists of four VMs:
+
+1. The Control Plane VM hosting a K8s cluster with 5G CP pods
+2. The User Plane VM hosting a K8s cluster with the 5G UPF pod
+3. The UERAN VM hosting a K8s cluster with the simulated 5G UE and gNB
+4. The VR VM running a virtual router (Cisco 8Kv)
+
+All VMs are pre-installed with the Ubuntu 20.04 OS, Docker, K8s, Helm and all necessary kernel modules and Helm charts for Free5GC. 
+
+On deployment, all pods and network interfaces are expected to start automatically. Also, right after deployment and due to the Free5GC implementation specifics, a series of re-initialization commands needs to be executed to restart all functions and connect the UE (the steps are described in the Initialization section).
+
+The FORTE VM flavors are shown below:
+
+![](images/FORTE-VM-Flavors.png)
+
+For the Cisco 8Kv VR the minimum flavor is 2 vcpu and 8GB RAM.
