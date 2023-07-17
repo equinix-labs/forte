@@ -177,6 +177,16 @@ Repeat the steps for other Free5GC devices (CP and UERAN). You should create sev
 
 ![](images/Forte-dl-up.png)
 
+## Configure Virtual Router
+
+SSH to the management IP address of the Cisco 8Kv device (you can find the IP address in the device details on the Equinix Fabric Portal). Use the config file provided in the "configs" folder. The config file provisions:
+
+* Interfaces GigabitEthernet 3-9 attached to the Free5GC VM interfaces
+* Interface GigabitEthernet2 with NAT and the security ACL
+* NAT
+* Security ACL
+* LLDP (LLDP is also enabled on the Free5GC VMs)
+
 
 
 

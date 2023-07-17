@@ -1,0 +1,254 @@
+octo-f5gc-c8k#sh run
+Building configuration...
+
+Current configuration : 7581 bytes
+!
+! Last configuration change at 18:06:43 UTC Tue May 16 2023 by onaplab
+!
+version 17.6
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+no service dhcp
+! Call-home is enabled by Smart-Licensing.
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname octo-f5gc-c8k
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition EQUINIX-MGMT
+ !
+ address-family ipv4
+ exit-address-family
+!
+logging buffered 100000
+!
+no aaa new-model
+no ip gratuitous-arps
+!
+!
+!
+!
+!         
+!
+!
+ip name-server 8.8.8.8 8.8.4.4
+ip domain name nfvportal.equinix.com
+!
+!
+!
+login on-failure log
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+license udi pid C8000V sn 9HQ0LB6WXEK
+license boot level network-advantage addon dna-advantage
+license smart url https://tools.cisco.com/its/service/oddce/services/DDCEService
+license smart url smart https://tools.cisco.com/its/service/oddce/services/DDCEService
+license smart transport callhome
+diagnostic bootup level minimal
+memory free low-watermark processor 68484
+!
+!
+spanning-tree extend system-id
+!
+redundancy
+!
+lldp run
+!
+interface GigabitEthernet1
+ description EQUINIX-MGMT-INTERFACE
+ vrf forwarding EQUINIX-MGMT
+ ip address dhcp
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description PUBLIC INTERFACE
+ ip address X.X.X.X 255.255.255.254
+ no ip redirects
+ no ip unreachables
+ no ip proxy-arp
+ ip nat outside
+ ip access-group public in
+ negotiation auto
+ ipv6 nd ra suppress all
+ no ipv6 redirects
+ no ipv6 unreachables
+ no keepalive
+ no lldp transmit
+ no lldp receive
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet3
+ description ### F5GC-UPF-N3 ###
+ ip address 172.23.63.1 255.255.255.240
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet4
+ description ### F5GC-UPF-N4 ###
+ ip address 172.23.64.1 255.255.255.240
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet5
+ description ### F5GC-UPF-N6 ###
+ ip address 172.23.66.1 255.255.255.0
+ ip nat inside
+ ip tcp adjust-mss 1000
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet6
+ description ### F5GC-CP-N4 ###
+ ip address 172.23.64.17 255.255.255.240
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet7
+ description ### F5GC-CP-N2 ###
+ ip address 172.23.62.1 255.255.255.240
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet8
+ description ### F5GC-GNB-N2 ###
+ ip address 172.23.62.17 255.255.255.240
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet9
+ description ### F5GC-GNB-N3 ###
+ ip address 172.23.63.17 255.255.255.240
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet10
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+no ip forward-protocol nd
+no ip forward-protocol udp
+no ip forward-protocol udp tftp
+no ip forward-protocol udp nameserver
+no ip forward-protocol udp domain
+no ip forward-protocol udp time
+no ip forward-protocol udp netbios-ns
+no ip forward-protocol udp netbios-dgm
+no ip forward-protocol udp tacacs
+no ip http server
+no ip http secure-server
+ip http client source-interface GigabitEthernet2
+!
+ip nat inside source list NAT interface GigabitEthernet2 overload extended
+ip route 0.0.0.0 0.0.0.0 X.X.X.X
+ip ssh time-out 60
+ip ssh logging events
+ip ssh version 2
+ip ssh dh min size 4096
+!
+ip access-list extended NAT
+ 10 deny   ip any 10.0.0.0 0.0.0.255
+ 20 deny   ip any 172.16.0.0 0.15.255.255
+ 30 deny   ip any 192.168.0.0 0.0.255.255
+ 40 permit ip 172.23.66.0 0.0.0.255 any
+ip access-list extended public
+ 20 permit udp any eq domain any
+ 30 permit icmp any any echo
+ 40 permit icmp any any echo-reply
+ 50 permit ipinip any any
+ 60 permit udp any eq isakmp any
+ 70 permit udp any eq non500-isakmp any
+ 80 permit esp any any
+ 90 permit ahp any any
+ 100 permit gre any any
+ 110 permit tcp any any eq 22
+ 130 permit tcp any any established
+ 140 deny   ip any any log
+!
+!
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!         
+!
+banner login ^C
+==========================================================
+
+Access to this system is limited to authorized users for
+             company business purposes only.
+
+     WARNING: All unauthorized access is prohibited.
+
+==========================================================
+^C
+!
+line con 0
+ exec-timeout 30 0
+ login local
+ stopbits 1
+line aux 0
+line vty 0 4
+ exec-timeout 30 0
+ login local
+ transport input ssh
+ transport output ssh
+!
+!         
+end
