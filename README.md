@@ -41,7 +41,7 @@ There is a 5G Control Plane cluster (f5gc-cp), 5G User Plane cluster (f5gc-upf) 
 
 The Forte project is targeted for developers/architects to try out the optimal placement of 5G functions on the edge infra that can be deployed and provisioned in (near) real time. We call it FORTE - Five-G Optimized by Real Time Edge. The detailed design diagram is shown below.
 
-![](images/FORTE-Design.png)
+![](images/FORTE-Design-1.png)
 
 ### Virtual Machines
 
