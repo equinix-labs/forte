@@ -62,3 +62,123 @@ The FORTE VM flavors are shown below:
 ![](images/FORTE-VM-Flavors.png)
 
 For the Cisco 8Kv VR the minimum flavor is 2 vcpu and 8GB RAM.
+
+On deployment, all Free5GC VMs will receive a DHCP assigned persistant Public IPv4 address for SSH access. All other VM interfaces are pre-configured as shown in the design diagram and the table below.
+
+![](images/FORTE-VM-IP-DL.png)
+
+Please use the table above to create Device Links to connect VM interfaces to the Virtual Router (see below).
+
+The dafault credentials to access Free5GC VMs are: "onaplab/Equinix@1234!"
+
+## FORTE Deployment
+
+To deploy FORTE, you must have access to the Equinix Fabric Portal at [http://fabric.equinix.com]() and Device Tokens to deploy the Free5GC VMs. To obtain Device Tokens please contact Equinix. The deployment process is described below. The expected time to deploy and connect all VMs, including the Cisco 8Kv virtual router, connect the simulated 5G UE and send traffic is approximately 40 min.
+
+### Obtain Device Tokens
+
+Login to the Equinix Fabric Portal and navigate to Service Tokens -> Device Tokens. If you have access to the Free5GC Device Tokens, they will be listed as shown below:
+
+![](images/Device-Tokens.png)
+
+Each token is specific to the type of Free5GC VM (CP, UPF, UE).
+
+### Create Free5GC Devices
+
+In the Equinix Fabric Portal, navigate to the Network Edge tab, select Create Virtual Device and scroll down to the last tile for Device Token. Enter the Device Token as below:
+
+![](images/Launch-f5gc-token.png)
+
+Depending on the token you entered, the next screen will show the Create Device option:
+
+![](images/Create-f5gc-dev-1.png) 
+
+Click next to go to next step to select the Metro:
+
+![](images/Create-f5gc-dev-2.png) 
+
+Click next to go to next step to specify device details:
+
+![](images/Create-f5gc-dev-3.png)
+
+Click next to go to next step to specify additional information (ssh ACL):
+
+![](images/Create-f5gc-dev-4.png)
+
+Click next to go to next step to review and launch the device:
+
+![](images/Create-f5gc-dev-6.png)
+
+Repeat all steps for the other two Free5GC devices.
+
+### Create the Virtual Router
+
+In the Equinix Fabric Portal, navigate to the Network Edge tab, select Create Virtual Device and scroll down to the Cisco Catalyst 8000v (autonomous mode) tile. Follow the steps below:
+
+![](images/Create-c8kv-1.png)
+
+Select Cisco Catalyst 8000v (autonomous mode) and go to the next screen: 
+
+![](images/Create-c8kv-2.png)
+
+Select single device and click next:
+
+![](images/Create-c8kv-3.png)
+
+Select the Metro and click next:
+
+![](images/Create-c8kv-4-1.png)
+
+Select vcpu, RAM and the software packge and go to the next screen.
+
+Specify device name, number of interfaces (**please sele[ct 24**), and the SSH interface (please select "**I will select the interface**" option and choose **GigabitEthernet2**).
+
+![](images/Create-c8kv-4-2.png)
+
+Go to the next screen to specify the SSH keys, WAN ACL and launch the device:
+
+![](images/Create-c8kv-5.png)
+
+### Verify Virtual Devices
+
+After all steps above have been completed, you should see all four virtual devices in the Provisioned state:
+
+![](images/Forte-devices-up.png)
+
+### Create Device Links
+
+The Free5GC VMs must be virtually linked to the Cisco 8Kv router. Please use the table below for the device link information (**please make sure to link interfaces as shown in the table**):
+
+![](images/Forte-dl-table.png)
+
+Follow the staps below to create device links in the Equinix Fabric Portal.
+
+Go to Network Edge -> Device Link Inventory:
+
+![](images/Create-dl-1.png)
+
+Creat a new DL Group by selecting two existing devices (e.g., UPF and VR):
+
+![](images/Create-dl-2.png)
+
+Specify the DL Name and select interfaces as shown in the DL table above:
+
+![](images/Create-dl-3.png)
+
+Submit the DL for provisioning:
+
+![](images/Create-dl-4.png)
+
+You should see the successful submission screen:
+
+![](images/Create-dl-5.png)
+
+Repeat the steps for other Free5GC devices (CP and UERAN). You should create seven (7) device links in total. Verify that all DLs are provisioned:
+
+![](images/Forte-dl-up.png)
+
+
+
+
+
+
