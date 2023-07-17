@@ -187,6 +187,101 @@ SSH to the management IP address of the Cisco 8Kv device (you can find the IP ad
 * Security ACL
 * LLDP (LLDP is also enabled on the Free5GC VMs)
 
+### Verify LLDP on Virtual Router
+
+SSH to VR and verify LLD neighbors:
+
+![](images/Forte-c8kv-lldp-up.png)
+
+### Verify NAT on Virtual Router
+
+SSH to VR and verify NAT:
+
+![](images/Forte-c8kv-nat-up.png)
+
+## Verify Free5G Operation
+
+### Verify device links
+
+Run the `test_cp_link.sh` script on the CP VM:
+
+![](images/Forte-f5gc-cp-links-up.png)
+
+Run the `test_cp_link.sh` script on the UPF VM:
+
+![](images/Forte-f5gc-upf-links-up.png)
+
+Run the `test_cp_link.sh` script on the UE VM:
+
+![](images/Forte-f5gc-ue-links-up.png)
+
+### Re-initialize UPF
+
+Immediately after the initial deployment, the UPF K8s pod may crash. 
+
+![](images/f5gc-upf-pod-crash.png)
+
+To re-initialize the UPF, run the following commands:
+
+`. ./get_pod.sh upf`, `kube5g delete pod $POD`
+
+![](images/f5gc-upf-pod-delete.png)
+
+### Re-initialize CP
+
+Restart the Control Plane SMF pod by running the following commands on the Free5GC CP VM:
+
+`. ./get_pod.sh smf`, `kube5g delete pod $POD`
+
+### Verify SMF logs
+
+The SMF should send the PFCP Association Requiest to the UPF, and receive the PFCP Association Response from the UPF. Run the following command on the Free5GC CP VM:
+
+`./get_log.sh smf`
+
+![](images/Forte-f5gc-cp-smf-log.png)
+
+### Restart UE and gNB
+
+On the Free5GC UERAN VM run the following command and wait until the script finishes:
+
+`./restart_ue.sh`
+
+### Access Free5GC Web UI
+
+Using the Free5GC CP VMs SSH IP address and port 30500, open the browser page:
+
+![](images/Forte-f5gc-webui-up.png)
+
+Log into the webui: admin/free5gc
+
+Verify the 5G subscriber real time status in webui:
+
+![](images/Forte-f5gc-webui-sub-up.png)
+
+Click on the "show info" button to get the subscriber's details:
+
+![](images/Forte-f5gc-webui-sub-amf.png)
+![](images/Forte-f5gc-webui-sub-smf.png)
+
+### Verify IP connectivity from 5G UE
+
+Login to the UERAN VM and run the following command to see UE's IP address:
+
+`./run_ue_cmd.sh "ip a"`
+
+Note the UE IPv4 address `10.1.0.1/32` on the `uesimtun0` interface.
+
+![](images/Forte-f5gc-ue-ip-up.png)
+
+Run the following command to send ICMP pings from UE to the Internet:
+
+`./run_ue_cmd.sh "ping www.cisco.com -I uesimtun0"`
+
+![](images/Forte-f5gc-ue-ping-up.png)
+
+
+
 
 
 
