@@ -1,4 +1,4 @@
-# **FORTE**: **F**ive-G **O**ptimized by **R**eal **T**ime **E**dge
+# **FORTE**: **F**iveG (5G) **O**ptimized by **R**eal **T**ime **E**dge
 
 This project describes deployment, operation and troubleshooting of the open-source [Free5GC](https://www.free5gc.org/) package on [Equinix Network Edge](https://www.equinix.com/products/digital-infrastructure-services/network-edge).
 
