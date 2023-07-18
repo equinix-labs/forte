@@ -39,7 +39,7 @@ Forte is a deployment of the open-source 5G package - [Free5GC](https://www.free
 
 There is a 5G Control Plane cluster (f5gc-cp), 5G User Plane cluster (f5gc-upf) and the simulated UE (device) and GNB (tower) cluster (f5gc-ueran). All are linked to the virtual router (Cisco 8000v) that allows to connect VMs together and to the Internet and Public/Private Clouds via [Equinix Fabric](https://www.equinix.com/products/digital-infrastructure-services/equinix-fabric).
 
-The Forte project is targeted for developers/architects to try out the optimal placement of 5G functions on the edge infra that can be deployed and provisioned in (near) real time. We call it FORTE - Five-G Optimized by Real Time Edge. The detailed design diagram is shown below.
+The Forte project is targeted for developers/architects to try out the optimal placement of 5G functions on the edge infra that can be deployed and provisioned in (near) real time. We call it FORTE - FiveG (5G) Optimized by Real Time Edge. The detailed design diagram is shown below.
 
 ![](images/FORTE-Design-1.png)
 
