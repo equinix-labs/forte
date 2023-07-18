@@ -19,11 +19,16 @@ In order to run this demo, the following is required:
 ## Setup
 
 1. Deploy FORTE.
+2. Configure virtual router (config provided in the "config" folder).
 2. Run Terraform plans: AWS, Azure, Equinix Metal.
 3. Verify connectivity.
 
 ## Demo design
 
 ![](../images/Forte-demo.png)
+
+## Demo configuration
+
+![](../images/FORTE-Design-1.png)
 
 
