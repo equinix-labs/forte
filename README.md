@@ -65,7 +65,7 @@ For the Cisco 8Kv VR the minimum flavor is 2 vcpu and 8GB RAM.
 
 On deployment, all Free5GC VMs will receive a DHCP assigned persistant Public IPv4 address for SSH access. All other VM interfaces are pre-configured as shown in the design diagram and the table below.
 
-![](images/FORTE-VM-IP-DL.png)
+![](images/FORTE-VM-IP-DL-1.png)
 
 Please use the table above to create Device Links to connect VM interfaces to the Virtual Router (see below).
 
