@@ -280,6 +280,66 @@ Run the following command to send ICMP pings from UE to the Internet:
 
 ![](images/Forte-f5gc-ue-ping-up.png)
 
+## Troubleshooting and restarting Free5GC
+
+Due to the Free5GC implementation specifics it is sometimes necessary to restart key 5G functions and reconnect the UE. During the testing it was noticed that the UE would loose its IP address after approximately 12 re-registration attempts with the 5G CP (AMF/SMF). So, it is expected that after approximately 12-18 hours of continuous operation, the UE will drop off the network. In order to recover the connectivity the following high-level steps need to be executed on all three Free5GC VMs:
+
+1. Delete UPF pod.
+2. Delete SMF pod.
+3. Restart UE/gNB.
+
+### Determining if UE lost its mobile IP address
+
+Login to the UERAN VM and connect to the UE container by running the following commands:
+
+`onaplab@f5gc-ueran:~$ . ./get_ue_pod.sh` 
+`UE =  f5gc-ueran-ueransim-ue-95b9f89b4-vtr49`
+
+`onaplab@f5gc-ueran:~$ kube5gexit $UE /bin/bash`
+
+`root@f5gc-ueran-ueransim-ue-95b9f89b4-vtr49:/ueransim/build# ip a`
+
+![](images/Forte-ue-no-ip.png)
+
+Note that the mobile tunnel interface `uesimtun0` is missing.
+
+### Delete UPF pod
+
+Login to the UPF VM and execute the following commands:
+
+`. ./get_pod.sh upf`
+
+`kube5g delete pod $POD`
+
+`kubeall`
+
+### Delete SMF pod
+
+Login to the CP VM and execute the following commands:
+
+`. ./get_pod.sh smf`
+
+`kube5g delete pod $POD`
+
+`kubeall`
+
+`./get_log.sh smf`
+
+You should see successful PFCP Association Registration Request/Response messages in the SMF log for the UPF.
+
+### Restart UE and gNB
+
+Login to the UERAN VM and execute the following commands:
+
+`./restart_uegnb.sh`
+
+Wait until the script finishes. You should see the following output:
+
+![](images/Forte-ue-restart.png)
+
+The UE has been successfully restarted. You can verify the Webui and run pings from the UE.
+
+
 
 
 
