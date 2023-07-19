@@ -149,7 +149,7 @@ After all steps above have been completed, you should see all four virtual devic
 
 The Free5GC VMs must be virtually linked to the Cisco 8Kv router. Please use the table below for the device link information (**please make sure to link interfaces as shown in the table**):
 
-![](images/Forte-dl-table.png)
+![](images/Forte-dl-table-1.png)
 
 Follow the staps below to create device links in the Equinix Fabric Portal.
 
