@@ -151,7 +151,7 @@ The Free5GC VMs must be virtually linked to the Cisco 8Kv router. Please use the
 
 ![](images/Forte-dl-table-1.png)
 
-Follow the staps below to create device links in the Equinix Fabric Portal.
+Follow the steps below to create device links in the Equinix Fabric Portal.
 
 Go to Network Edge -> Device Link Inventory:
 
