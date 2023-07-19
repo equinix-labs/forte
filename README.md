@@ -339,6 +339,91 @@ Wait until the script finishes. You should see the following output:
 
 The UE has been successfully restarted. You can verify the Webui and run pings from the UE.
 
+## Free5GC redeploployment
+
+In case you need to undeploy the Free5GC pods and re-deploy them again, use the following K8s and Helm commands.
+
+### Free5GC UPF
+
+To undeploy:
+
+`helm -n f5gc uninstall f5gc-upf`
+
+`kubectl delete crd network-attachment-definitions.k8s.cni.cncf.io`
+
+`kubectl -n kube-system delete ds kube-multus-ds`
+
+To deploy:
+
+`cat ./multus-cni/deployments/multus-daemonset-thick.yml | kubectl apply -f -`
+
+`helm -n f5gc install f5gc-upf f5gc-ne/upf`
+
+### Free5GC CP
+
+To undeploy:
+
+`helm -n f5gc uninstall f5gc-udm`
+
+`helm -n f5gc uninstall f5gc-udr`
+
+`helm -n f5gc uninstall f5gc-pcf`
+ 
+`helm -n f5gc uninstall f5gc-ausf`
+
+`helm -n f5gc uninstall f5gc-nssf`
+ 
+`helm -n f5gc uninstall f5gc-webui`
+
+`helm -n f5gc uninstall f5gc-amf`
+
+`helm -n f5gc uninstall f5gc-smf`
+
+`helm -n f5gc uninstall f5gc-nrf`
+
+`kubectl delete crd network-attachment-definitions.k8s.cni.cncf.io`
+
+`kubectl -n kube-system delete ds kube-multus-ds`
+
+To deploy:
+
+`cat ./multus-cni/deployments/multus-daemonset-thick.yml | kubectl apply -f -`
+
+`helm -n f5gc install f5gc-nrf ~/f5gc-ne/cp/free5gc-nrf/`
+
+`helm -n f5gc install f5gc-smf ~/f5gc-ne/cp/free5gc-smf/`
+
+`helm -n f5gc install f5gc-amf ~/f5gc-ne/cp/free5gc-amf/`
+
+`helm -n f5gc install f5gc-udm ~/f5gc-ne/cp/free5gc-udm/`
+
+`helm -n f5gc install f5gc-udr ~/f5gc-ne/cp/free5gc-udr/`
+
+`helm -n f5gc install f5gc-pcf ~/f5gc-ne/cp/free5gc-pcf/`
+
+`helm -n f5gc install f5gc-ausf ~/f5gc-ne/cp/free5gc-ausf/`
+
+`helm -n f5gc install f5gc-nssf ~/f5gc-ne/cp/free5gc-nssf/`
+
+`helm -n f5gc install f5gc-webui ~/f5gc-ne/cp/free5gc-webui/`
+
+### Free 5GC UE/gNB
+
+To undeploy:
+
+`helm -n f5gc uninstall f5gc-ueran`
+
+`kubectl delete crd network-attachment-definitions.k8s.cni.cncf.io`
+
+`kubectl -n kube-system delete ds kube-multus-ds`
+
+To deploy:
+
+`cat ./multus-cni/deployments/multus-daemonset-thick.yml | kubectl apply -f -`
+
+`helm -n f5gc install f5gc-ueran ~/f5gc-ne/ueran/`
+
+
 
 
 
